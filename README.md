@@ -22,7 +22,7 @@ $ tick VTI VXUS BND
 Keep your favorites in the `TICK` env variable:
 
 ```
-TICK="VTI VXUS BND"
+export TICK="VTI VXUS BND"
 $ tick
 ```
 
