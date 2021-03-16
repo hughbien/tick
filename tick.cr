@@ -69,7 +69,7 @@ module Tick
     def price
       if market_state == "REGULAR" || OPTS["regular"]
         regular_market_price
-      elsif market_state.includes?("PRE")
+      elsif market_state == "PRE"
         pre_market_price.not_nil!
       else
         post_market_price.not_nil!
@@ -79,7 +79,7 @@ module Tick
     def change
       if market_state == "REGULAR" || OPTS["regular"]
         regular_market_change
-      elsif market_state.includes?("PRE")
+      elsif market_state == "PRE"
         pre_market_change.not_nil!
       else
         post_market_change.not_nil!
@@ -89,7 +89,7 @@ module Tick
     def percent
       if market_state == "REGULAR" || OPTS["regular"]
         regular_market_change_percent
-      elsif market_state.includes?("PRE")
+      elsif market_state == "PRE"
         pre_market_change_percent.not_nil!
       else
         post_market_change_percent.not_nil!
