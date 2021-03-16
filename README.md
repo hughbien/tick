@@ -26,13 +26,20 @@ export TICK="VTI VXUS BND"
 $ tick
 ```
 
-You can override the `TICK` env var by passing in a symbol. Use the `+` prefix to look up in addition
-to your defaults.
+You can override the `TICK` env var by passing in a symbol. Use `-i` or `--include` to include
+symbols in addition to your env vars.
 
 ```
-$ tick GME   # just GME
-$ tick +GME  # VTI VXUS BND and GME
+$ tick GME     # just GME
+$ tick -i GME  # VTI VXUS BND and GME
 ```
+
+Use `-r` or `--regular` if you're only interested in regular market hours.
+
+## TODO
+
+* option to show regular + pre/post
+* show periods (1d, 5d, 1m, 6m, ytd, 1y, 5y, max)
 
 ## License
 

@@ -9,6 +9,7 @@ module Tick
   COLOR_GREEN="\e[32m"
   COLOR_RED="\e[31m"
   COLOR_RESET="\e[00m"
+  OPTS = {"include" => false, "regular" => false}
 
   alias PadCounts = NamedTuple(symbol: Int32, price: Int32, change: Int32, pct: Int32)
 
@@ -61,16 +62,12 @@ module Tick
     @[JSON::Field(key: "postMarketChangePercent")]
     getter post_market_change_percent : Float64?
 
-    def non_regular_market?
-      market_state != "REGULAR"
-    end
-
     def non_regular_market_sign
-      non_regular_market? ? "*" : ""
+      OPTS["regular"] || market_state == "REGULAR" ? "" : "*"
     end
 
     def price
-      if market_state == "REGULAR"
+      if market_state == "REGULAR" || OPTS["regular"]
         regular_market_price
       elsif market_state.includes?("PRE")
         pre_market_price.not_nil!
@@ -80,7 +77,7 @@ module Tick
     end
 
     def change
-      if market_state == "REGULAR"
+      if market_state == "REGULAR" || OPTS["regular"]
         regular_market_change
       elsif market_state.includes?("PRE")
         pre_market_change.not_nil!
@@ -90,7 +87,7 @@ module Tick
     end
 
     def percent
-      if market_state == "REGULAR"
+      if market_state == "REGULAR" || OPTS["regular"]
         regular_market_change_percent
       elsif market_state.includes?("PRE")
         pre_market_change_percent.not_nil!
@@ -147,14 +144,16 @@ module Tick
 
   def self.parse_symbols
     parser = OptionParser.parse(ARGV) do |parser|
-      parser.banner = "Usage: tick symbol1 symbol2 symbol3..."
+      parser.banner = "Usage: tick [symbol, ...]\nGet stock prices and changes"
       parser.on("-h", "--help", "print this help message") { puts(parser); exit }
+      parser.on("-i", "--include", "include additional symbols") { OPTS["include"] = true }
+      parser.on("-r", "--regular", "regular market hours only") { OPTS["regular"] = true }
     end
 
     symbols = Array(String).new
     if ARGV.empty? && ENV["TICK"]?
       symbols = ENV["TICK"].split(" ")
-    elsif ARGV.any? { |s| s =~ /^\+/ } && ENV["TICK"]?
+    elsif OPTS["include"] && ENV["TICK"]?
       symbols = ENV["TICK"].split(" ") + ARGV
     else
       symbols = ARGV
@@ -164,7 +163,7 @@ module Tick
       puts parser
       exit
     end
-    symbols.map(&.upcase.sub(/^\+/, ""))
+    symbols.map(&.upcase)
   end
 
   def self.run
