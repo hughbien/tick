@@ -20,11 +20,11 @@ can use the `--ignore-dependencies crystal` option.
 Download the latest binary and place it in your `$PATH`:
 
 ```
-wget -O /usr/local/bin/tick https://github.com/hughbien/tick/releases/download/v0.1.0/tick-linux64
+wget -O /usr/local/bin/tick https://github.com/hughbien/tick/releases/download/v0.1.1/tick-linux64
 chmod +x /usr/local/bin/tick
 ```
 
-MD5 checksum is: `4dfb5eeae2b89d5bf53487dff3ee5aaf`
+MD5 checksum is: `93d8e0549df23c79286697e064b58c5b`
 
 **From Source**
 
