@@ -3,7 +3,7 @@ INSTALL_BIN ?= /usr/local/bin
 build: tick
 tick:
 	crystal build --release tick.cr
-	rm tick.dwarf
+	rm -f tick.dwarf
 
 build-static:
 	docker run --rm -it -v $(PWD):/workspace -w /workspace crystallang/crystal:0.36.1-alpine crystal build tick.cr --release --static
