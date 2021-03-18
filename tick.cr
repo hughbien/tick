@@ -5,10 +5,11 @@ require "http/client"
 require "option_parser"
 
 module Tick
-  API_ENDPOINT="https://query1.finance.yahoo.com/v7/finance/quote?lang=en-US&region=US&corsDomain=finance.yahoo.com"
-  COLOR_GREEN="\e[32m"
-  COLOR_RED="\e[31m"
-  COLOR_RESET="\e[00m"
+  VERSION = "0.1.0"
+  API_ENDPOINT = "https://query1.finance.yahoo.com/v7/finance/quote?lang=en-US&region=US&corsDomain=finance.yahoo.com"
+  COLOR_GREEN = "\e[32m"
+  COLOR_RED = "\e[31m"
+  COLOR_RESET = "\e[00m"
   OPTS = {"include" => false, "regular" => false}
 
   alias PadCounts = NamedTuple(symbol: Int32, price: Int32, change: Int32, pct: Int32)
@@ -146,6 +147,7 @@ module Tick
     parser = OptionParser.parse(ARGV) do |parser|
       parser.banner = "Usage: tick [symbol, ...]\nGet stock prices and changes"
       parser.on("-h", "--help", "print this help message") { puts(parser); exit }
+      parser.on("-v", "--version", "print version") { puts(VERSION); exit }
       parser.on("-i", "--include", "include additional symbols") { OPTS["include"] = true }
       parser.on("-r", "--regular", "regular market hours only") { OPTS["regular"] = true }
     end

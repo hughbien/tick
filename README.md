@@ -4,12 +4,38 @@ Look up stock prices from the command line.
 
 Implementation of [ticker.sh](https://github.com/pstadler/ticker.sh) in Crystal.
 
-## Installation
+## Install
 
-1. install [Crystal](https://crystal-lang.org/install/)
-2. checkout this repo
-3. make build
-4. move `tick` binary somewhere in your `$PATH`
+**Mac**
+
+```
+brew install hughbien/tap/tick
+```
+
+This will install Crystal as a dependency. If you already have a non-homebrew Crystal installed, you
+can use the `--ignore-dependencies crystal` option.
+
+**Linux**
+
+Download the latest binary and place it in your `$PATH`:
+
+```
+wget -O /usr/local/bin/tick https://github.com/hughbien/tick/releases/download/v0.1.0/tick-linux64
+chmod +x /usr/local/bin/tick
+```
+
+MD5 checksum is: `4dfb5eeae2b89d5bf53487dff3ee5aaf`
+
+**From Source**
+
+Checkout this repo, run `make` and `make install` (requires [Crystal](https://crystal-lang.org/install/)):
+
+```
+git clone https://github.com/hughbien/tick.git
+cd tick
+make
+make install
+```
 
 ## Usage
 
