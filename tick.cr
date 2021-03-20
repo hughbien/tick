@@ -5,7 +5,7 @@ require "http/client"
 require "option_parser"
 
 module Tick
-  VERSION = "0.1.1"
+  VERSION = "0.1.2"
   API_ENDPOINT = "https://query1.finance.yahoo.com/v7/finance/quote?lang=en-US&region=US&corsDomain=finance.yahoo.com"
   COLOR_GREEN = "\e[32m"
   COLOR_RED = "\e[31m"
