@@ -37,13 +37,13 @@ module Tick
     getter market_state : String
 
     @[JSON::Field(key: "regularMarketPrice")]
-    getter regular_market_price : Float64
+    getter regular_market_price : Float64?
 
     @[JSON::Field(key: "regularMarketChange")]
-    getter regular_market_change : Float64
+    getter regular_market_change : Float64?
 
     @[JSON::Field(key: "regularMarketChangePercent")]
-    getter regular_market_change_percent : Float64
+    getter regular_market_change_percent : Float64?
 
     @[JSON::Field(key: "preMarketPrice")]
     getter pre_market_price : Float64?
@@ -63,13 +63,17 @@ module Tick
     @[JSON::Field(key: "postMarketChangePercent")]
     getter post_market_change_percent : Float64?
 
+    def ignore?
+      regular_market_price.nil?
+    end
+
     def non_regular_market_sign
       OPTS["regular"] || market_state == "REGULAR" ? "" : "*"
     end
 
     def price
       if market_state == "REGULAR" || OPTS["regular"]
-        regular_market_price
+        regular_market_price.not_nil!
       elsif market_state == "PRE"
         pre_market_price.not_nil!
       else
@@ -79,7 +83,7 @@ module Tick
 
     def change
       if market_state == "REGULAR" || OPTS["regular"]
-        regular_market_change
+        regular_market_change.not_nil!
       elsif market_state == "PRE"
         pre_market_change.not_nil!
       else
@@ -89,7 +93,7 @@ module Tick
 
     def percent
       if market_state == "REGULAR" || OPTS["regular"]
-        regular_market_change_percent
+        regular_market_change_percent.not_nil!
       elsif market_state == "PRE"
         pre_market_change_percent.not_nil!
       else
@@ -172,8 +176,10 @@ module Tick
     symbols = parse_symbols
     results = Hash(String, QuoteResult).new
     fetch(symbols).quote_response.results.each do |result|
-      results[result.symbol] = result
+      results[result.symbol] = result unless result.ignore?
     end
+    return if results.empty?
+
     cols = get_cols(results.values)
     symbols.each do |symbol|
       print_result(results[symbol], cols) if results.has_key?(symbol)
